@@ -1,5 +1,4 @@
 // server.js - Main server file for Socket.io chat application
-
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -100,10 +99,8 @@ io.on('connection', (socket) => {
       io.emit('user_left', { username, id: socket.id });
       console.log(`${username} left the chat`);
     }
-    
     delete users[socket.id];
     delete typingUsers[socket.id];
-    
     io.emit('user_list', Object.values(users));
     io.emit('typing_users', Object.values(typingUsers));
   });
@@ -114,19 +111,23 @@ app.get('/api/messages', (req, res) => {
   res.json(messages);
 });
 
+
 app.get('/api/users', (req, res) => {
   res.json(Object.values(users));
 });
+
 
 // Root route
 app.get('/', (req, res) => {
   res.send('Socket.io Chat Server is running');
 });
 
+
 // Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 module.exports = { app, server, io }; 
